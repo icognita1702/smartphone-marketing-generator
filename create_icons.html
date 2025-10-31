@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerador de Ícones para Extensão</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: white; }
+        .container { max-width: 800px; margin: 0 auto; }
+        canvas { border: 1px solid #00d4aa; margin: 10px; background: white; }
+        button { background: linear-gradient(135deg, #00d4aa, #00a8cc); border: none; color: white; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; }
+        button:hover { opacity: 0.8; }
+        .icon-preview { display: inline-block; margin: 10px; text-align: center; }
+        .instructions { background: rgba(0, 212, 170, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Gerador de Ícones - Marketing Smartphones</h1>
+        
+        <div class="instructions">
+            <h3>Instruções:</h3>
+            <ol>
+                <li>Clique nos botões abaixo para gerar os ícones</li>
+                <li>Clique com o botão direito em cada ícone gerado</li>
+                <li>Selecione "Salvar imagem como..."</li>
+                <li>Salve na pasta <code>icons/</code> do seu projeto com os nomes exatos</li>
+                <li>Recarregue a extensão no Chrome</li>
+            </ol>
+        </div>
+
+        <button onclick="generateAllIcons()">Gerar Todos os Ícones</button>
+        <button onclick="downloadAll()">Download Automático</button>
+        
+        <div id="icons-container"></div>
+    </div>
+
+    <script>
+        function createIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Fundo gradiente
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#00d4aa');
+            gradient.addColorStop(1, '#00a8cc');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Borda arredondada
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.2);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Ícone de smartphone (retângulo branco)
+            ctx.fillStyle = 'white';
+            const phoneWidth = size * 0.4;
+            const phoneHeight = size * 0.6;
+            const phoneX = (size - phoneWidth) / 2;
+            const phoneY = (size - phoneHeight) / 2;
+            
+            ctx.beginPath();
+            ctx.roundRect(phoneX, phoneY, phoneWidth, phoneHeight, size * 0.05);
+            ctx.fill();
+            
+            // Tela do telefone
+            ctx.fillStyle = '#1a1a2e';
+            const screenPadding = size * 0.05;
+            ctx.beginPath();
+            ctx.roundRect(
+                phoneX + screenPadding, 
+                phoneY + screenPadding * 2, 
+                phoneWidth - screenPadding * 2, 
+                phoneHeight - screenPadding * 4, 
+                size * 0.02
+            );
+            ctx.fill();
+            
+            // Botão home
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(size / 2, phoneY + phoneHeight - screenPadding, size * 0.03, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            return canvas;
+        }
+        
+        function generateAllIcons() {
+            const container = document.getElementById('icons-container');
+            container.innerHTML = '';
+            
+            const sizes = [16, 32, 48, 128];
+            
+            sizes.forEach(size => {
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'icon-preview';
+                
+                const canvas = createIcon(size);
+                canvas.title = `icon${size}.png`;
+                
+                const label = document.createElement('div');
+                label.textContent = `icon${size}.png (${size}x${size})`;
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = 'Download';
+                downloadBtn.onclick = () => downloadCanvas(canvas, `icon${size}.png`);
+                
+                iconDiv.appendChild(canvas);
+                iconDiv.appendChild(label);
+                iconDiv.appendChild(downloadBtn);
+                
+                container.appendChild(iconDiv);
+            });
+        }
+        
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadAll() {
+            const sizes = [16, 32, 48, 128];
+            sizes.forEach((size, index) => {
+                setTimeout(() => {
+                    const canvas = createIcon(size);
+                    downloadCanvas(canvas, `icon${size}.png`);
+                }, index * 500);
+            });
+        }
+        
+        // Gerar ícones automaticamente ao carregar
+        window.onload = generateAllIcons;
+    </script>
+</body>
+</html>
