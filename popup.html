@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Marketing para Smartphones</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <h1>📱 Marketing Generator</h1>
+        <p>Assistente Criativo Inteligente</p>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Seção de Configuração -->
+      <section class="config-section" id="configSection">
+        <div class="input-group">
+          <label for="smartphoneInput">Nome do Smartphone:</label>
+          <input 
+            type="text" 
+            id="smartphoneInput" 
+            placeholder="Ex: Samsung Galaxy S24 Ultra"
+            class="input-field"
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="apiKeyInput">Chave da API Gemini:</label>
+          <input 
+            type="password" 
+            id="apiKeyInput" 
+            placeholder="Sua API Key do Google AI Studio"
+            class="input-field"
+          >
+          <small class="help-text">
+            <a href="https://aistudio.google.com/app/apikey" target="_blank">Obter API Key</a>
+          </small>
+        </div>
+
+        <div class="input-group">
+          <label for="imageCount">Número de Prompts de Imagem:</label>
+          <div class="slider-container">
+            <input 
+              type="range" 
+              id="imageCount" 
+              min="3" 
+              max="10" 
+              value="5" 
+              class="slider"
+            >
+            <span class="slider-value" id="imageCountValue">5</span>
+          </div>
+        </div>
+
+        <button id="generateBtn" class="generate-btn">
+          <span class="btn-text">Gerar Pacote de Marketing</span>
+          <span class="btn-icon">🚀</span>
+        </button>
+      </section>
+
+      <!-- Seção de Loading -->
+      <section class="loading-section hidden" id="loadingSection">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">
+          <h3>Processando...</h3>
+          <p id="loadingMessage">Iniciando pesquisa inteligente...</p>
+        </div>
+      </section>
+
+      <!-- Seção de Resultados -->
+      <section class="results-section hidden" id="resultsSection">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="texts">📝 Textos do Anúncio</button>
+          <button class="tab-btn" data-tab="images">🎨 Prompts de Imagem</button>
+        </div>
+
+        <!-- Aba de Textos -->
+        <div class="tab-content active" id="textsTab">
+          <div class="result-card">
+            <h3>Títulos de Anúncio</h3>
+            <div id="adTitles" class="content-list"></div>
+          </div>
+
+          <div class="result-card">
+            <h3>Descrição do Produto</h3>
+            <div id="productDescription" class="content-text"></div>
+          </div>
+
+          <div class="result-card">
+            <h3>Características Principais</h3>
+            <div id="keyFeatures" class="content-list"></div>
+          </div>
+
+          <div class="result-card">
+            <h3>Palavras-chave SEO</h3>
+            <div id="seoKeywords" class="content-tags"></div>
+          </div>
+        </div>
+
+        <!-- Aba de Imagens -->
+        <div class="tab-content" id="imagesTab">
+          <div class="result-card highlight">
+            <h3>🎯 Prompt Principal de Referência</h3>
+            <div id="mainImagePrompt" class="content-text"></div>
+          </div>
+
+          <div class="result-card">
+            <h3>Prompts Criativos</h3>
+            <div id="creativePrompts" class="content-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção de Erro -->
+      <section class="error-section hidden" id="errorSection">
+        <div class="error-content">
+          <h3>❌ Erro</h3>
+          <p id="errorMessage"></p>
+          <button id="retryBtn" class="retry-btn">Tentar Novamente</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Powered by Gemini AI | <a href="#" id="aboutBtn">Sobre</a></p>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
